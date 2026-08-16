@@ -1,5 +1,6 @@
 import { Button, Typography } from "@humansignal/ui";
 import { Space } from "@humansignal/ui/lib/space/space";
+import { useTranslation } from "react-i18next";
 import { cn } from "apps/labelstudio/src/utils/bem";
 import { Modal } from "apps/labelstudio/src/components/Modal/ModalPopup";
 import { API } from "apps/labelstudio/src/providers/ApiProvider";
@@ -36,10 +37,12 @@ export function InviteLink({
     }
   }, [opened]);
 
+  const { t } = useTranslation();
+
   return (
     <Modal
       ref={modalRef}
-      title="Invite members"
+      title={t("organization.inviteMembers")}
       opened={opened}
       bareFooter={true}
       body={<InvitationModal />}
@@ -52,33 +55,20 @@ export function InviteLink({
 }
 
 const InvitationModal = () => {
+  const { t } = useTranslation();
   const { data: link } = useAtomValue(linkAtom);
   return (
     <div className={cn("invite").toClassName()}>
       <Input value={link} style={{ width: "100%" }} readOnly />
       <Typography size="small" className="text-neutral-content-subtler mt-base mb-wider">
-        Invite members to join your Label Studio instance. People that you invite have full access to all of your
-        projects.{" "}
-        <a
-          href="https://labelstud.io/guide/signup.html"
-          target="_blank"
-          rel="noreferrer"
-          className="hover:underline"
-          onClick={() =>
-            __lsa("docs.organization.add_people.learn_more", {
-              href: "https://labelstud.io/guide/signup.html",
-            })
-          }
-        >
-          Learn more
-        </a>
-        .
+        {t("organization.inviteDescription")}
       </Typography>
     </div>
   );
 };
 
 const InvitationFooter = () => {
+  const { t } = useTranslation();
   const { copyText, copied } = useTextCopy();
   const { refetch, data: link } = useAtomValue(linkAtom);
 
@@ -90,9 +80,9 @@ const InvitationFooter = () => {
           look="outlined"
           style={{ width: 170 }}
           onClick={() => refetch()}
-          aria-label="Refresh invite link"
+          aria-label={t("organization.resetLink")}
         >
-          Reset Link
+          {t("organization.resetLink")}
         </Button>
       </Space>
       <Space>
@@ -100,9 +90,9 @@ const InvitationFooter = () => {
           variant={copied ? "positive" : "primary"}
           className="w-[170px]"
           onClick={() => copyText(link!)}
-          aria-label="Copy invite link"
+          aria-label={t("organization.copyLink")}
         >
-          {copied ? "Copied!" : "Copy link"}
+          {copied ? t("organization.copied") : t("organization.copyLink")}
         </Button>
       </Space>
     </Space>

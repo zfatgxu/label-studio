@@ -3,8 +3,9 @@ import { Spinner } from "../../../components";
 import { useAPI } from "../../../providers/ApiProvider";
 import { cn } from "../../../utils/bem";
 import "./Config.scss";
+import { useTranslation } from "react-i18next";
 import { IconInfo } from "@humansignal/icons";
-import { Button, EnterpriseBadge } from "@humansignal/ui";
+import { Button } from "@humansignal/ui";
 
 const listClass = cn("templates-list");
 
@@ -16,39 +17,33 @@ const Arrow = () => (
 );
 
 const TemplatesInGroup = ({ templates, group, onSelectRecipe, isEdition }) => {
+  const isCommunityEdition = isEdition === "Community";
   const picked = templates
     .filter((recipe) => recipe.group === group)
+    .filter((recipe) => !(isCommunityEdition && recipe.type === "enterprise"))
     // templates without `order` go to the end of the list
     .sort((a, b) => (a.order ?? Number.POSITIVE_INFINITY) - (b.order ?? Number.POSITIVE_INFINITY));
 
-  const isCommunityEdition = isEdition === "Community";
-
   return (
     <ul>
-      {picked.map((recipe) => {
-        const isEnterpriseTemplate = recipe.type === "enterprise";
-        const isDisabled = isCommunityEdition && isEnterpriseTemplate;
-
-        return (
-          <li
-            key={recipe.title}
-            onClick={() => !isDisabled && onSelectRecipe(recipe)}
-            className={listClass.elem("template").mod({ disabled: isDisabled }).toClassName()}
-            title={isDisabled ? "Enterprise feature - Available in Label Studio Enterprise" : ""}
-          >
-            <img src={recipe.image} alt={""} />
-            <div className="flex flex-col items-center w-full">
-              <h3 className="flex flex-1 justify-center text-center w-full">{recipe.title}</h3>
-              {isEnterpriseTemplate && isCommunityEdition && <EnterpriseBadge className="mb-base" />}
-            </div>
-          </li>
-        );
-      })}
+      {picked.map((recipe) => (
+        <li
+          key={recipe.title}
+          onClick={() => onSelectRecipe(recipe)}
+          className={listClass.elem("template").toClassName()}
+        >
+          <img src={recipe.image} alt={""} />
+          <div className="flex flex-col items-center w-full">
+            <h3 className="flex flex-1 justify-center text-center w-full">{recipe.title}</h3>
+          </div>
+        </li>
+      ))}
     </ul>
   );
 };
 
 export const TemplatesList = ({ selectedGroup, selectedRecipe, onCustomTemplate, onSelectGroup, onSelectRecipe }) => {
+  const { t } = useTranslation();
   const [groups, setGroups] = React.useState([]);
   const [templates, setTemplates] = React.useState();
   const api = useAPI();
@@ -97,9 +92,9 @@ export const TemplatesList = ({ selectedGroup, selectedRecipe, onCustomTemplate,
           size="small"
           onClick={onCustomTemplate}
           className="w-full"
-          aria-label="Create custom template"
+          aria-label={t("labeling.templates.createCustomTemplate")}
         >
-          Custom template
+          {t("labeling.templates.customTemplate")}
         </Button>
       </aside>
       <main>
@@ -113,13 +108,7 @@ export const TemplatesList = ({ selectedGroup, selectedRecipe, onCustomTemplate,
       </main>
       <footer className="flex items-center justify-center gap-1">
         <IconInfo className={listClass.elem("info-icon").toClassName()} width="20" height="20" />
-        <span>
-          See the documentation to{" "}
-          <a href="https://labelstud.io/guide" target="_blank" rel="noreferrer">
-            contribute a template
-          </a>
-          .
-        </span>
+        <span>{t("labeling.templates.contributeTemplate")}</span>
       </footer>
     </div>
   );

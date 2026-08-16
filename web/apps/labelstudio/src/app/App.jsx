@@ -25,6 +25,8 @@ import { ff } from "@humansignal/core";
 import "@humansignal/ui/src/tailwind.css";
 import "./App.scss";
 import { AuthProvider } from "@humansignal/core/providers/AuthProvider";
+import { I18nextProvider } from "react-i18next";
+import i18n from "../i18n";
 
 const baseURL = new URL(APP_SETTINGS.hostname || location.origin);
 export const UNBLOCK_HISTORY_MESSAGE = "UNBLOCK_HISTORY";
@@ -58,8 +60,9 @@ initSentry(browserHistory);
 
 const App = ({ content }) => {
   return (
-    <ErrorBoundary>
-      <Router history={browserHistory}>
+    <I18nextProvider i18n={i18n}>
+      <ErrorBoundary>
+        <Router history={browserHistory}>
         <MultiProvider
           providers={[
             <QueryClientProvider client={queryClient} key="query" />,
@@ -80,8 +83,9 @@ const App = ({ content }) => {
             <ToastViewport />
           </AsyncPage>
         </MultiProvider>
-      </Router>
-    </ErrorBoundary>
+        </Router>
+      </ErrorBoundary>
+    </I18nextProvider>
   );
 };
 

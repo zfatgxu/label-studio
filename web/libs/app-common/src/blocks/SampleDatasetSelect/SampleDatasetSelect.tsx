@@ -1,5 +1,6 @@
 import { Select } from "@humansignal/ui";
 import { useCallback, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 
 type Sample = {
   title: string;
@@ -16,9 +17,7 @@ export function SampleDatasetSelect({
   sample?: Sample;
   onSampleApplied: (sample?: Sample) => void;
 }) {
-  const title = useMemo(() => {
-    return sample?.title ?? "Select sample";
-  }, [sample]);
+  const { t } = useTranslation();
 
   const onSelect = useCallback(
     (value: string) => {
@@ -35,12 +34,12 @@ export function SampleDatasetSelect({
       value: sample.url,
       label: (
         <div className="flex flex-col">
-          <div className="font-bold">{sample.title}</div>
-          <div className="mt-2">{sample.description}</div>
+          <div className="font-bold">{t(sample.title)}</div>
+          <div className="mt-2">{t(sample.description)}</div>
         </div>
       ),
     }));
-  }, [samples]);
+  }, [samples, t]);
   const onClick = () => {
     if ("__lsa" in window) {
       __lsa("sample.open");
@@ -49,17 +48,18 @@ export function SampleDatasetSelect({
 
   const selectedValueRenderer = useCallback(
     (option: any) => {
-      return samples.find((o) => o.url === option.value)?.title ?? option?.label;
+      const found = samples.find((o) => o.url === option.value);
+      return found ? t(found.title) : option?.label;
     },
-    [samples],
+    [samples, t],
   );
 
   return (
     <div className="flex gap-3 items-center">
-      <span className="text-neutral-content-subtler">or use a sample dataset</span>
+      <span className="text-neutral-content-subtler">{t("dataImport.sampleDatasets.orUseSample")}</span>
       <Select
         value={sample?.url ?? undefined}
-        placeholder="Select sample"
+        placeholder={t("dataImport.sampleDatasets.selectSample")}
         onChange={onSelect}
         triggerProps={{ onClick }}
         options={options}

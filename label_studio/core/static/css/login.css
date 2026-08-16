@@ -376,3 +376,99 @@ label {
 .text-wrapper a:hover {
   text-decoration: none;
 }
+.gxu-login-page .gxu-login-brand {
+  gap: 1rem;
+}
+
+.gxu-login-logo {
+  width: 76px;
+  height: 76px;
+  flex: 0 0 auto;
+}
+
+.login_page.gxu-login-page {
+  min-height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.25rem;
+  background: linear-gradient(135deg, #edf6ff 0%, #f4fbf9 100%);
+}
+
+.login_page.gxu-login-page .gxu-login-brand {
+  display: flex;
+  max-width: 560px;
+  margin-bottom: 1.5rem;
+  align-items: center;
+}
+
+.gxu-login-brand h1 {
+  margin: 0;
+  color: #123b67;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  line-height: 1.35;
+}
+
+.gxu-login-brand p {
+  margin: .4rem 0 0;
+  color: #47627d;
+  font-size: 1rem;
+}
+
+.login_page_new_ui.gxu-login-page .left {
+  background: linear-gradient(145deg, #e8f2ff 0%, #edf9f4 100%);
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.login_page_new_ui.gxu-login-page .left:after {
+  display: none;
+}
+
+.login_page_new_ui.gxu-login-page .gxu-login-brand h1,
+.login_page_new_ui.gxu-login-page .gxu-login-brand p {
+  max-width: 430px;
+  text-align: center;
+}
+
+@media (max-width: 760px) {
+  .login_page_new_ui.gxu-login-page {
+    min-height: 100%;
+    height: auto;
+    flex-direction: column;
+  }
+
+  .login_page_new_ui.gxu-login-page .left,
+  .login_page_new_ui.gxu-login-page .right {
+    flex: initial;
+    width: 100%;
+    min-height: auto;
+  }
+
+  .login_page_new_ui.gxu-login-page .left {
+    padding: 2rem 1.25rem;
+  }
+
+  .form-wrapper {
+    width: min(22rem, calc(100vw - 2.5rem));
+    box-sizing: border-box;
+  }
+}
+
+.gxu-title-line {
+  display: block;
+}
+
+@media (min-width: 761px) {
+  .login_page.gxu-login-page {
+    justify-content: flex-start;
+    padding-top: calc(33vh - 6rem);
+  }
+
+  .login_page_new_ui.gxu-login-page .left {
+    justify-content: flex-start;
+    padding-top: calc(33vh - 5rem);
+  }
+}

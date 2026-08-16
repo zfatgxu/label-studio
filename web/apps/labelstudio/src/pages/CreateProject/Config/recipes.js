@@ -1,12 +1,10 @@
 export const recipes = [
   {
-    title: "Bbox object detection",
+    titleKey: "labeling.recipes.bbox.title",
     type: "community",
     group: "Computer Vision",
     image: "bbox.png",
-    details: `<h1>Simple object detection</h1>
-    <p>Sample config to label with bboxes</p>
-    <p>You can configure labels and their colors</p>`,
+    detailsKey: "labeling.recipes.bbox.details",
     config: `<View>
   <Image name="image" value="$image"/>
   <RectangleLabels name="label" toName="image">
@@ -16,11 +14,11 @@ export const recipes = [
 </View>`,
   },
   {
-    title: "Polygon labeling",
+    titleKey: "labeling.recipes.polygon.title",
     type: "community",
     group: "Computer Vision",
     image: "polygon.png",
-    details: "",
+    detailsKey: "labeling.recipes.polygon.details",
     config: `<View>
   <Header value="Select label and click on image to start"/>
   <Image name="image" value="$image"/>
@@ -34,10 +32,11 @@ export const recipes = [
 `,
   },
   {
-    title: "Named entity recognition",
+    titleKey: "labeling.recipes.ner.title",
     type: "community",
     group: "NLP",
     image: "text.png",
+    detailsKey: "labeling.recipes.ner.details",
     config: `<View>
   <Labels name="label" toName="text">
     <Label value="Person" background="red"/>

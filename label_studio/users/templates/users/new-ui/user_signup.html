@@ -83,7 +83,7 @@
     <p class="">Already have an account?</p>
     <a href="{% url 'user-login' %}{% querystring %}">Log in</a>
   </div>
-  <script>
+  <script nonce="{{request.csp_nonce}}">
     document.querySelector("#how_find_us").addEventListener('change', function(e) {
       const isOther = e.target.value == '{{ elaborate }}';
       document.querySelector("#elaborateContainer").style.display = isOther ? 'block' : 'none';

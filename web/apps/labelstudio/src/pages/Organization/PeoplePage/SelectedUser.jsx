@@ -1,4 +1,6 @@
 import { format } from "date-fns";
+import { zhCN } from "date-fns/locale";
+import { useTranslation } from "react-i18next";
 import { NavLink } from "react-router-dom";
 import { IconCross } from "@humansignal/icons";
 import { Userpic, Button } from "@humansignal/ui";
@@ -23,6 +25,7 @@ const UserProjectsLinks = ({ projects }) => {
 };
 
 export const SelectedUser = ({ user, onClose }) => {
+  const { t } = useTranslation();
   const fullName = [user.first_name, user.last_name]
     .filter((n) => !!n)
     .join(" ")
@@ -34,7 +37,7 @@ export const SelectedUser = ({ user, onClose }) => {
         look="string"
         onClick={onClose}
         className="absolute top-[20px] right-[24px]"
-        aria-label="Close user details"
+        aria-label={t("organization.closeUserDetails")}
       >
         <IconCross />
       </Button>
@@ -55,7 +58,7 @@ export const SelectedUser = ({ user, onClose }) => {
 
       {!!user.created_projects.length && (
         <div className={cn("user-info").elem("section").toClassName()}>
-          <div className={cn("user-info").elem("section-title").toClassName()}>Created Projects</div>
+          <div className={cn("user-info").elem("section-title").toClassName()}>{t("organization.createdProjects")}</div>
 
           <UserProjectsLinks projects={user.created_projects} />
         </div>
@@ -63,14 +66,16 @@ export const SelectedUser = ({ user, onClose }) => {
 
       {!!user.contributed_to_projects.length && (
         <div className={cn("user-info").elem("section").toClassName()}>
-          <div className={cn("user-info").elem("section-title").toClassName()}>Contributed to</div>
+          <div className={cn("user-info").elem("section-title").toClassName()}>{t("organization.contributedTo")}</div>
 
           <UserProjectsLinks projects={user.contributed_to_projects} />
         </div>
       )}
 
       <p className={cn("user-info").elem("last-active").toClassName()}>
-        Last activity on: {format(new Date(user.last_activity), "dd MMM yyyy, KK:mm a")}
+        {t("organization.lastActiveOn", {
+          date: format(new Date(user.last_activity), "yyyy年MM月dd日 HH:mm", { locale: zhCN }),
+        })}
       </p>
     </div>
   );

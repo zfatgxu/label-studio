@@ -1,11 +1,10 @@
-import { EnterpriseBadge, Select, Typography } from "@humansignal/ui";
-import React from "react";
+import { useTranslation } from "react-i18next";
+import { Select, Typography } from "@humansignal/ui";
 import { useHistory } from "react-router";
 import { ToggleItems } from "../../components";
 import { Button } from "@humansignal/ui";
 import { Modal } from "../../components/Modal/Modal";
 import { Space } from "../../components/Space/Space";
-import { HeidiTips } from "../../components/HeidiTips/HeidiTips";
 import { useAPI } from "../../providers/ApiProvider";
 import { cn } from "../../utils/bem";
 import { ConfigPage } from "./Config/Config";
@@ -15,10 +14,11 @@ import { useImportPage } from "./Import/useImportPage";
 import { useDraftProject } from "./utils/useDraftProject";
 import { Input, TextArea } from "../../components/Form";
 import { FF_LSDV_E_297, isFF } from "../../utils/feature-flags";
-import { createURL } from "../../components/HeidiTips/utils";
 
-const ProjectName = ({ name, setName, onSaveName, onSubmit, error, description, setDescription, show = true }) =>
-  !show ? null : (
+const ProjectName = ({ name, setName, onSaveName, onSubmit, error, description, setDescription, show = true }) => {
+  const { t } = useTranslation();
+
+  return !show ? null : (
     <form
       className={cn("project-name").toClassName()}
       onSubmit={(e) => {
@@ -28,7 +28,7 @@ const ProjectName = ({ name, setName, onSaveName, onSubmit, error, description, 
     >
       <div className="w-full flex flex-col gap-2">
         <label className="w-full" htmlFor="project_name">
-          Project Name
+          {t("projectCreate.fields.name.label")}
         </label>
         <Input
           name="name"
@@ -42,12 +42,12 @@ const ProjectName = ({ name, setName, onSaveName, onSubmit, error, description, 
       </div>
       <div className="w-full flex flex-col gap-2">
         <label className="w-full" htmlFor="project_description">
-          Description
+          {t("projectCreate.fields.description.label")}
         </label>
         <TextArea
           name="description"
           id="project_description"
-          placeholder="Optional description of your project"
+          placeholder={t("projectCreate.fields.description.placeholder")}
           rows="4"
           style={{ minHeight: 100 }}
           value={description}
@@ -57,35 +57,24 @@ const ProjectName = ({ name, setName, onSaveName, onSubmit, error, description, 
       </div>
       {isFF(FF_LSDV_E_297) && (
         <div className="w-full flex flex-col gap-2">
-          <label>
-            Workspace
-            <EnterpriseBadge className="ml-tight" />
-          </label>
-          <Select placeholder="Select an option" disabled options={[]} triggerClassName="!flex-1" />
+          <label>{t("projectCreate.fields.workspace.label")}</label>
+          <Select
+            placeholder={t("projectCreate.fields.workspace.placeholder")}
+            disabled
+            options={[]}
+            triggerClassName="!flex-1"
+          />
           <Typography size="small" className="mt-tight mb-wider">
-            Simplify project management by organizing projects into workspaces.{" "}
-            <a
-              href={createURL(
-                "https://docs.humansignal.com/guide/manage_projects#Create-workspaces-to-organize-projects",
-                {
-                  experiment: "project_creation_dropdown",
-                  treatment: "simplify_project_management",
-                },
-              )}
-              target="_blank"
-              rel="noreferrer"
-              className="underline hover:no-underline"
-            >
-              Learn more
-            </a>
+            {t("projectCreate.fields.workspace.hint")}
           </Typography>
-          <HeidiTips collection="projectCreation" />
         </div>
       )}
     </form>
   );
+};
 
 export const CreateProject = ({ onClose }) => {
+  const { t } = useTranslation();
   const [step, _setStep] = React.useState("name"); // name | import | config
   const [waiting, setWaitingStatus] = React.useState(false);
 
@@ -117,9 +106,13 @@ export const CreateProject = ({ onClose }) => {
   const rootClass = cn("create-project");
   const tabClass = rootClass.elem("tab");
   const steps = {
-    name: <span className={tabClass.mod({ disabled: !!error }).toClassName()}>Project Name</span>,
-    import: <span className={tabClass.mod({ disabled: uploadDisabled }).toClassName()}>Data Import</span>,
-    config: "Labeling Setup",
+    name: <span className={tabClass.mod({ disabled: !!error }).toClassName()}>{t("projectCreate.steps.name")}</span>,
+    import: (
+      <span className={tabClass.mod({ disabled: uploadDisabled }).toClassName()}>
+        {t("projectCreate.steps.import")}
+      </span>
+    ),
+    config: t("projectCreate.steps.labeling"),
   };
 
   // name intentionally skipped from deps:
@@ -138,6 +131,10 @@ export const CreateProject = ({ onClose }) => {
   );
 
   const onCreate = React.useCallback(async () => {
+    if (!name.trim()) {
+      setError(t("projectCreate.validation.nameRequired"));
+      return;
+    }
     // First, persist project with label_config so import/reimport validates against it
     const response = await api.callApi("updateProject", {
       params: {
@@ -200,7 +197,7 @@ export const CreateProject = ({ onClose }) => {
     <Modal onHide={onDelete} closeOnClickOutside={false} allowToInterceptEscape fullscreen visible bare>
       <div className={rootClass}>
         <Modal.Header>
-          <h1>Create Project</h1>
+          <h1>{t("projectCreate.title")}</h1>
           <ToggleItems items={steps} active={step} onSelect={setStep} />
 
           <Space>
@@ -209,9 +206,9 @@ export const CreateProject = ({ onClose }) => {
               look="outlined"
               onClick={onDelete}
               waiting={waiting}
-              aria-label="Cancel project creation"
+              aria-label={t("projectCreate.actions.cancel")}
             >
-              Cancel
+              {t("projectCreate.actions.cancel")}
             </Button>
             <Button
               look="primary"
@@ -220,7 +217,7 @@ export const CreateProject = ({ onClose }) => {
               waitingClickable={false}
               disabled={!project || uploadDisabled || error}
             >
-              Save
+              {t("projectCreate.actions.save")}
             </Button>
           </Space>
         </Modal.Header>

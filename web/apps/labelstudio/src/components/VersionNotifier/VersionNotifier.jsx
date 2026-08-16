@@ -1,5 +1,6 @@
 import { format } from "date-fns";
 import { createContext, useCallback, useContext, useEffect, useReducer } from "react";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { useAPI } from "../../providers/ApiProvider";
 import { cn } from "../../utils/bem";
@@ -43,25 +44,27 @@ export const VersionProvider = ({ children }) => {
 };
 
 export const VersionNotifier = ({ showNewVersion, showCurrentVersion }) => {
+  const { t } = useTranslation();
   const { newVersion, updateTime, latestVersion, version } = useContext(VersionContext) ?? {};
-  const url = `https://labelstud.io/redirect/update?version=${version}`;
 
   return newVersion && showNewVersion ? (
     <li className={cn("version-notifier").toClassName()}>
-      <a href={url} target="_blank" rel="noreferrer">
+      <Link to="/version">
         <div className={cn("version-notifier").elem("icon").toClassName()}>
           <IconBell />
         </div>
         <div className={cn("version-notifier").elem("content").toClassName()}>
           <div className={cn("version-notifier").elem("title").toClassName()} data-date={updateTime}>
-            {latestVersion} Available
+            {t("navigation.versionAvailable", { latestVersion })}
           </div>
-          <div className={cn("version-notifier").elem("description").toClassName()}>Current version: {version}</div>
+          <div className={cn("version-notifier").elem("description").toClassName()}>
+            {t("navigation.currentVersion", { version })}
+          </div>
         </div>
-      </a>
+      </Link>
     </li>
   ) : version && showCurrentVersion ? (
-    <Link className={cn("current-version").toClassName()} to="/version" target="_blank">
+    <Link className={cn("current-version").toClassName()} to="/version">
       v{version}
     </Link>
   ) : null;

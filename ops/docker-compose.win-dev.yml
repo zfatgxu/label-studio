@@ -1,0 +1,38 @@
+name: gxu-label-studio-win-dev
+
+services:
+  label-studio-dev:
+    image: heartexlabs/label-studio:1.23.0
+    container_name: label-studio-win-dev
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8082:8000"
+    command:
+      - sh
+      - -c
+      - >-
+        python /label-studio/label_studio/manage.py migrate --noinput &&
+        python /label-studio/label_studio/manage.py runserver 0.0.0.0:8000
+    environment:
+      DEBUG: "true"
+      # 本地开发不检查 PyPI 新版本，避免容器访问外网。
+      LATEST_VERSION_CHECK: "false"
+      HTTP_PROXY: ""
+      HTTPS_PROXY: ""
+      http_proxy: ""
+      https_proxy: ""
+      NO_PROXY: "*"
+      no_proxy: "*"
+      LABEL_STUDIO_BASE_DATA_DIR: /label-studio/data
+      FRONTEND_HMR: "true"
+      FRONTEND_HOSTNAME: http://localhost:8010
+      DJANGO_HOSTNAME: http://localhost:8082
+      # 本机开发由预置管理员创建账户；禁止匿名公开注册。
+      DISABLE_SIGNUP_WITHOUT_LINK: "true"
+    volumes:
+      - ../label_studio:/label-studio/label_studio
+      - gxu_label_studio_win_dev_data:/label-studio/data
+
+volumes:
+  gxu_label_studio_win_dev_data:
+    name: gxu-label-studio-win-dev-data

@@ -1,14 +1,18 @@
-import { IconCross, IconExternal, IconPencil, IconWebhook } from "@humansignal/icons";
+import { IconCross, IconPencil, IconWebhook } from "@humansignal/icons";
 import { Button, EmptyState, SimpleCard, Typography } from "@humansignal/ui";
 import clsx from "clsx";
 import { format } from "date-fns";
+import { zhCN, enUS } from "date-fns/locale";
+import { useTranslation } from "react-i18next";
 import { useCallback } from "react";
 import { Toggle } from "../../components/Form";
 import { useAPI } from "../../providers/ApiProvider";
 import { WebhookDeleteModal } from "./WebhookDeleteModal";
 import { ABILITY, useAuth } from "@humansignal/core/providers/AuthProvider";
 
-const WebhookListItem = ({ webhook, onSelectActive, onActiveChange, onDelete, canChangeWebhooks }) => {
+const dateLocales = { "zh-CN": zhCN, "en-US": enUS };
+
+const WebhookListItem = ({ webhook, onSelectActive, onActiveChange, onDelete, canChangeWebhooks, t, i18n }) => {
   return (
     <li
       className={clsx(
@@ -37,13 +41,17 @@ const WebhookListItem = ({ webhook, onSelectActive, onActiveChange, onDelete, ca
           </div>
         </div>
         <div className="text-neutral-content-subtler text-sm mt-1">
-          Created {format(new Date(webhook.created_at), "dd MMM yyyy, HH:mm")}
+          {t("settings.webhook.createdAt", {
+            date: format(new Date(webhook.created_at), t("settings.webhook.createdAtFormat"), {
+              locale: dateLocales[i18n.language] ?? enUS,
+            }),
+          })}
         </div>
       </div>
       {canChangeWebhooks && (
         <div className="hidden group-hover:flex gap-2">
           <Button variant="primary" look="outlined" onClick={() => onSelectActive(webhook.id)} icon={<IconPencil />}>
-            Edit
+            {t("common.edit")}
           </Button>
           <Button
             variant="negative"
@@ -55,7 +63,7 @@ const WebhookListItem = ({ webhook, onSelectActive, onActiveChange, onDelete, ca
             }
             icon={<IconCross />}
           >
-            Delete
+            {t("common.delete")}
           </Button>
         </div>
       )}
@@ -64,6 +72,7 @@ const WebhookListItem = ({ webhook, onSelectActive, onActiveChange, onDelete, ca
 };
 
 const WebhookList = ({ onSelectActive, onAddWebhook, webhooks, fetchWebhooks }) => {
+  const { t, i18n } = useTranslation();
   const api = useAPI();
   const { permissions } = useAuth();
   const canChangeWebhooks = permissions.can(ABILITY.can_change_webhooks);
@@ -88,12 +97,11 @@ const WebhookList = ({ onSelectActive, onAddWebhook, webhooks, fetchWebhooks }) 
     <>
       <header className="mb-base">
         <Typography variant="headline" size="medium" className="mb-tight">
-          Webhooks
+          {t("settings.webhook.heading")}
         </Typography>
         {webhooks.length > 0 && (
           <Typography size="small" className="text-neutral-content-subtler">
-            Setup integrations that subscribe to certain events using Webhooks. When an event is triggered, {"app name"}{" "}
-            sends an HTTP POST request to the configured webhook URL.
+            {t("settings.webhook.description")}
           </Typography>
         )}
       </header>
@@ -104,32 +112,16 @@ const WebhookList = ({ onSelectActive, onAddWebhook, webhooks, fetchWebhooks }) 
               size="medium"
               variant="primary"
               icon={<IconWebhook />}
-              title="Add your first webhook"
-              description="Setup integrations that subscribe to certain events using Webhooks. When an event is triggered, Label Studio sends an HTTP POST request to the configured webhook URL."
+              title={t("settings.webhook.emptyTitle")}
+              description={t("settings.webhook.description")}
               actions={
                 canChangeWebhooks ? (
                   <Button variant="primary" look="filled" onClick={onAddWebhook}>
-                    Add Webhook
+                    {t("settings.webhook.addWebhook")}
                   </Button>
                 ) : (
                   <Typography variant="body" size="small">
-                    Contact your administrator to create Webhooks
-                  </Typography>
-                )
-              }
-              footer={
-                !window.APP_SETTINGS.whitelabel_is_active && (
-                  <Typography variant="label" size="small" className="text-primary-link">
-                    <a
-                      href="https://docs.humansignal.com/guide/webhooks.html"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 hover:underline"
-                      aria-label="Learn more about webhooks (opens in new window)"
-                    >
-                      Learn more
-                      <IconExternal width={16} height={16} />
-                    </a>
+                    {t("settings.webhook.noPermission")}
                   </Typography>
                 )
               }
@@ -150,6 +142,8 @@ const WebhookList = ({ onSelectActive, onAddWebhook, webhooks, fetchWebhooks }) 
                   await fetchWebhooks();
                 }}
                 canChangeWebhooks={canChangeWebhooks}
+                t={t}
+                i18n={i18n}
               />
             ))}
           </ul>
@@ -158,7 +152,7 @@ const WebhookList = ({ onSelectActive, onAddWebhook, webhooks, fetchWebhooks }) 
       {webhooks.length > 0 && canChangeWebhooks && (
         <div className="flex justify-end w-full mt-base">
           <Button variant="primary" look="filled" onClick={onAddWebhook}>
-            Add Webhook
+            {t("settings.webhook.addWebhook")}
           </Button>
         </div>
       )}

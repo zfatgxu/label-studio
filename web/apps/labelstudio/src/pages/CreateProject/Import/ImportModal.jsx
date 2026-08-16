@@ -1,4 +1,5 @@
 import { useCallback, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router";
 import { Button } from "@humansignal/ui";
 import { Modal } from "../../../components/Modal/Modal";
@@ -17,6 +18,7 @@ export const Inner = () => {
   const modal = useRef();
   const refresh = useRefresh();
   const { project } = useProject();
+  const { t } = useTranslation();
   const [waiting, setWaitingStatus] = useState(false);
   const [sample, setSample] = useState(null);
   const api = useAPI();
@@ -63,7 +65,7 @@ export const Inner = () => {
 
   return (
     <Modal
-      title="Import data"
+      title={t("dataImport.title")}
       ref={modal}
       onHide={() => backToDM()}
       closeOnClickOutside={false}
@@ -72,7 +74,7 @@ export const Inner = () => {
       bare
     >
       <Modal.Header divided>
-        <div className={cn("modal").elem("title").toClassName()}>Import Data</div>
+        <div className={cn("modal").elem("title").toClassName()}>{t("dataImport.title")}</div>
 
         <Space>
           <Button
@@ -81,18 +83,18 @@ export const Inner = () => {
             look="outlined"
             waiting={waiting}
             onClick={onCancel}
-            aria-label="Cancel import"
+            aria-label={t("common.cancel")}
           >
-            Cancel
+            {t("common.cancel")}
           </Button>
           <Button
             size="small"
             onClick={onFinish}
             waiting={waiting || uploading}
             disabled={uploadDisabled}
-            aria-label="Finish import"
+            aria-label={t("common.import")}
           >
-            Import
+            {t("common.import")}
           </Button>
         </Space>
       </Modal.Header>

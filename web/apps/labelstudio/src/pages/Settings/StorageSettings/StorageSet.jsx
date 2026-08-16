@@ -3,6 +3,7 @@ import { ff } from "@humansignal/core";
 import { Button } from "@humansignal/ui";
 import { useAtomValue } from "jotai";
 import { forwardRef, useCallback, useContext, useImperativeHandle } from "react";
+import { useTranslation } from "react-i18next";
 import { Columns } from "../../../components";
 import { confirm, modal } from "../../../components/Modal/Modal";
 import { Spinner } from "../../../components/Spinner/Spinner";
@@ -29,6 +30,7 @@ export const StorageSet = forwardRef(
     },
     ref,
   ) => {
+    const { t } = useTranslation();
     const api = useContext(ApiContext);
     const project = useAtomValue(projectAtom);
 
@@ -36,9 +38,15 @@ export const StorageSet = forwardRef(
 
     const showStorageFormModal = useCallback(
       (storage) => {
-        const action = storage ? "Edit" : "Connect";
-        const actionTarget = target === "export" ? "Target" : "Source";
-        const title = `${action} ${actionTarget} Storage`;
+        const isEdit = !!storage;
+        const isExport = target === "export";
+        const title = isEdit
+          ? isExport
+            ? t("settings.storage.modal.editTargetTitle")
+            : t("settings.storage.modal.editSourceTitle")
+          : isExport
+            ? t("settings.storage.modal.connectTargetTitle")
+            : t("settings.storage.modal.connectSourceTitle");
 
         const modalRef = modal({
           title,
@@ -104,8 +112,8 @@ export const StorageSet = forwardRef(
     const onDeleteStorage = useCallback(
       async (storage) => {
         confirm({
-          title: "Deleting storage",
-          body: "This action cannot be undone. Are you sure?",
+          title: t("settings.storage.modal.deleteTitle"),
+          body: t("settings.storage.modal.deleteBody"),
           buttonLook: "negative",
           onOk: async () => {
             const response = await api.callApi("deleteStorage", {
@@ -131,7 +139,7 @@ export const StorageSet = forwardRef(
             disabled={loading}
             look="outlined"
             data-testid={`add-${target === "export" ? "target" : "source"}-storage-button`}
-            aria-label={`Add ${target === "export" ? "Target" : "Source"} Storage`}
+            aria-label={target === "export" ? t("settings.storage.addTarget") : t("settings.storage.addSource")}
           >
             {buttonLabel}
           </Button>

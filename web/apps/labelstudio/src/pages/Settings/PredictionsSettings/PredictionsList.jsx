@@ -1,6 +1,8 @@
 import { useCallback, useContext } from "react";
+import { useTranslation } from "react-i18next";
 
 import { format, formatDistanceToNow, parseISO } from "date-fns";
+import { zhCN, enUS } from "date-fns/locale";
 import { Menu } from "../../../components";
 import { Button, Dropdown } from "@humansignal/ui";
 import { IconInfoOutline, IconPredictions, IconEllipsis } from "@humansignal/icons";
@@ -10,6 +12,8 @@ import { ApiContext } from "../../../providers/ApiProvider";
 import { cn } from "../../../utils/bem";
 
 import "./PredictionsList.scss";
+
+const dateLocales = { "zh-CN": zhCN, "en-US": enUS };
 
 export const PredictionsList = ({ project, versions, fetchVersions }) => {
   const api = useContext(ApiContext);
@@ -38,14 +42,15 @@ export const PredictionsList = ({ project, versions, fetchVersions }) => {
   );
 };
 
-const VersionCard = ({ version, selected, onSelect, editable, onDelete }) => {
+const VersionCard = ({ version, onDelete }) => {
+  const { t, i18n } = useTranslation();
   const rootClass = cn("prediction-card");
 
   const confirmDelete = useCallback(
     (version) => {
       confirm({
-        title: "Delete Predictions",
-        body: "This action cannot be undone. Are you sure?",
+        title: t("settings.predictions.list.deleteTitle"),
+        body: t("settings.predictions.list.deleteBody"),
         buttonLook: "destructive",
         onOk() {
           onDelete?.(version);
@@ -61,7 +66,7 @@ const VersionCard = ({ version, selected, onSelect, editable, onDelete }) => {
         <div className={rootClass.elem("title").toClassName()}>
           {version.model_version}
           {version.model_version === "undefined" && (
-            <Tooltip title="Model version is undefined. Likely means that model_version field was missing when predictions were imported.">
+            <Tooltip title={t("settings.predictions.list.undefinedTooltip")}>
               <IconInfoOutline className={cn("help-icon").toClassName()} width="14" height="14" />
             </Tooltip>
           )}
@@ -72,11 +77,16 @@ const VersionCard = ({ version, selected, onSelect, editable, onDelete }) => {
             &nbsp;{version.count}
           </div>
           <div className={rootClass.elem("group").toClassName()}>
-            Last prediction created&nbsp;
-            <Tooltip title={format(parseISO(version.latest), "yyyy-MM-dd HH:mm:ss")}>
+            {t("settings.predictions.list.latestPredictionCreated")}&nbsp;
+            <Tooltip
+              title={format(parseISO(version.latest), t("settings.predictions.list.latestTooltipFormat"), {
+                locale: dateLocales[i18n.language] ?? enUS,
+              })}
+            >
               <span>
                 {formatDistanceToNow(parseISO(version.latest), {
                   addSuffix: true,
+                  locale: dateLocales[i18n.language] ?? enUS,
                 })}
               </span>
             </Tooltip>
@@ -89,7 +99,7 @@ const VersionCard = ({ version, selected, onSelect, editable, onDelete }) => {
           content={
             <Menu size="medium" contextual>
               <Menu.Item onClick={() => confirmDelete(version)} isDangerous>
-                Delete
+                {t("settings.predictions.list.delete")}
               </Menu.Item>
             </Menu>
           }

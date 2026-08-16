@@ -1,19 +1,20 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useUpdatePageTitle, createTitleFromSegments } from "@humansignal/core";
 import { useAPI } from "../../providers/ApiProvider";
 import { useProject } from "../../providers/ProjectProvider";
 import { FF_UNSAVED_CHANGES, isFF } from "../../utils/feature-flags";
-import { isEmptyString } from "../../utils/helpers";
 import { ConfigPage } from "../CreateProject/Config/Config";
 
 export const LabelingSettings = () => {
+  const { t } = useTranslation();
   const { project, fetchProject, updateProject } = useProject();
   const [config, setConfig] = useState("");
   const [essentialDataChanged, setEssentialDataChanged] = useState(false);
   const hasChanges = isFF(FF_UNSAVED_CHANGES) && config !== project.label_config;
   const api = useAPI();
 
-  useUpdatePageTitle(createTitleFromSegments([project?.title, "Labeling Interface Settings"]));
+  useUpdatePageTitle(createTitleFromSegments([project?.title, t("settings.labeling.title")]));
 
   const saveConfig = useCallback(
     isFF(FF_UNSAVED_CHANGES)
@@ -53,18 +54,6 @@ export const LabelingSettings = () => {
     [project, config],
   );
 
-  const projectAlreadySetUp = useMemo(() => {
-    if (project.label_config) {
-      const hasConfig = !isEmptyString(project.label_config);
-      const configIsEmpty = project.label_config.replace(/\s/g, "") === "<View></View>";
-      const hasTasks = project.task_number > 0;
-
-      console.log({ hasConfig, configIsEmpty, hasTasks, project });
-      return hasConfig && !configIsEmpty && hasTasks;
-    }
-    return false;
-  }, [project]);
-
   const onSave = useCallback(async () => {
     return saveConfig();
   }, [essentialDataChanged, saveConfig]);
@@ -91,5 +80,5 @@ export const LabelingSettings = () => {
   );
 };
 
-LabelingSettings.title = "Labeling Interface";
+LabelingSettings.title = "标注界面";
 LabelingSettings.path = "/labeling";

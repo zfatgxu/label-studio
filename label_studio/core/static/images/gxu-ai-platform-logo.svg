@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-labelledby="title desc">
+  <title id="title">广西大学 AI 智算团队</title>
+  <desc id="desc">GXU AI 数据管理平台标识</desc>
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#1565c0"/>
+      <stop offset="1" stop-color="#00897b"/>
+    </linearGradient>
+  </defs>
+  <rect width="160" height="160" rx="32" fill="url(#g)"/>
+  <path d="M43 113V47h19l18 33 18-33h19v66h-16V75l-14 25h-14L59 75v38H43Z" fill="#fff"/>
+  <circle cx="122" cy="42" r="13" fill="#ffca28"/>
+</svg>

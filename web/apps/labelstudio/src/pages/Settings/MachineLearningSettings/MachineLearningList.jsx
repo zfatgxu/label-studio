@@ -1,4 +1,6 @@
 import { formatDistanceToNow, format, parseISO } from "date-fns";
+import { zhCN, enUS } from "date-fns/locale";
+import { useTranslation } from "react-i18next";
 import { useCallback, useContext } from "react";
 
 import truncate from "truncate-middle";
@@ -12,6 +14,8 @@ import { ApiContext } from "../../../providers/ApiProvider";
 import { cn } from "../../../utils/bem";
 
 import "./MachineLearningList.scss";
+
+const dateLocales = { "zh-CN": zhCN, "en-US": enUS };
 
 export const MachineLearningList = ({ backends, fetchBackends, onEdit, onTestRequest, onStartTraining }) => {
   const api = useContext(ApiContext);
@@ -45,18 +49,19 @@ export const MachineLearningList = ({ backends, fetchBackends, onEdit, onTestReq
 };
 
 const BackendCard = ({ backend, onStartTrain, onEdit, onDelete, onTestRequest }) => {
+  const { t, i18n } = useTranslation();
   const confirmDelete = useCallback(
     (backend) => {
       confirm({
-        title: "Delete ML Backend",
-        body: "This action cannot be undone. Are you sure?",
+        title: t("settings.ml.list.deleteTitle"),
+        body: t("settings.ml.list.deleteBody"),
         buttonLook: "destructive",
         onOk() {
           onDelete?.(backend);
         },
       });
     },
-    [backend, onDelete],
+    [backend, onDelete, t],
   );
 
   const rootClass = cn("backend-card");
@@ -74,17 +79,17 @@ const BackendCard = ({ backend, onStartTrain, onEdit, onDelete, onTestRequest })
             align="right"
             content={
               <Menu size="medium" contextual>
-                <Menu.Item onClick={() => onEdit(backend)}>Edit</Menu.Item>
-                <Menu.Item onClick={() => onTestRequest(backend)}>Send Test Request</Menu.Item>
-                <Menu.Item onClick={() => onStartTrain(backend)}>Start Training</Menu.Item>
+                <Menu.Item onClick={() => onEdit(backend)}>{t("common.edit")}</Menu.Item>
+                <Menu.Item onClick={() => onTestRequest(backend)}>{t("settings.ml.list.sendTestRequest")}</Menu.Item>
+                <Menu.Item onClick={() => onStartTrain(backend)}>{t("settings.ml.list.startTraining")}</Menu.Item>
                 <Menu.Divider />
                 <Menu.Item onClick={() => confirmDelete(backend)} isDangerous>
-                  Delete
+                  {t("common.delete")}
                 </Menu.Item>
               </Menu>
             }
           >
-            <Button look="string" size="small" className="!p-0" aria-label="Machine learning model options">
+            <Button look="string" size="small" className="!p-0" aria-label={t("settings.ml.list.optionsAria")}>
               <IconEllipsis />
             </Button>
           </Dropdown.Trigger>
@@ -94,11 +99,16 @@ const BackendCard = ({ backend, onStartTrain, onEdit, onDelete, onTestRequest })
       <div className={rootClass.elem("meta").toClassName()}>
         <div className={rootClass.elem("group").toClassName()}>{truncate(backend.url, 20, 10, "...")}</div>
         <div className={rootClass.elem("group").toClassName()}>
-          <Tooltip title={format(parseISO(backend.created_at), "yyyy-MM-dd HH:mm:ss")}>
+          <Tooltip
+            title={format(parseISO(backend.created_at), t("settings.ml.list.createdTooltipFormat"), {
+              locale: dateLocales[i18n.language] ?? enUS,
+            })}
+          >
             <span>
-              Created&nbsp;
+              {t("settings.ml.list.created")}&nbsp;
               {formatDistanceToNow(parseISO(backend.created_at), {
                 addSuffix: true,
+                locale: dateLocales[i18n.language] ?? enUS,
               })}
             </span>
           </Tooltip>
@@ -109,17 +119,18 @@ const BackendCard = ({ backend, onStartTrain, onEdit, onDelete, onTestRequest })
 };
 
 const BackendState = ({ backend }) => {
+  const { t } = useTranslation();
   const { state } = backend;
 
   return (
     <div className={cn("ml").elem("status").toClassName()}>
       <span className={cn("ml").elem("indicator").mod({ state }).toClassName()} />
       <Oneof value={state} className={cn("ml").elem("status-label").toClassName()}>
-        <span case="DI">Disconnected</span>
-        <span case="CO">Connected</span>
-        <span case="ER">Error</span>
-        <span case="TR">Training</span>
-        <span case="PR">Predicting</span>
+        <span case="DI">{t("settings.ml.list.stateDisconnected")}</span>
+        <span case="CO">{t("settings.ml.list.stateConnected")}</span>
+        <span case="ER">{t("settings.ml.list.stateError")}</span>
+        <span case="TR">{t("settings.ml.list.stateTraining")}</span>
+        <span case="PR">{t("settings.ml.list.statePredicting")}</span>
       </Oneof>
     </div>
   );

@@ -866,6 +866,14 @@ if ENABLE_CSP := get_bool_env('ENABLE_CSP', True):
         'https://*.g.double' + 'click.net',  # hacky way of suppressing codespell complaint
         'https://*.ingest.sentry.io',
     )
+    # HMR assets run on the Win11 browser loopback only. Do not loosen CSP for
+    # LAN or external hosts; frontend assets and the WebSocket have fixed origins.
+    _LOCAL_HMR_ORIGINS = ('http://localhost:8010', 'http://127.0.0.1:8010', 'http://[::1]:8010')
+    if FRONTEND_HMR and FRONTEND_HOSTNAME in _LOCAL_HMR_ORIGINS:
+        _HMR_WS_ORIGIN = 'ws://' + FRONTEND_HOSTNAME.removeprefix('http://')
+        CSP_STYLE_SRC += (FRONTEND_HOSTNAME,)
+        CSP_SCRIPT_SRC += (FRONTEND_HOSTNAME,)
+        CSP_CONNECT_SRC += (FRONTEND_HOSTNAME, _HMR_WS_ORIGIN)
     # Note that this will be overridden to real CSP for views that use the override_report_only_csp decorator
     CSP_REPORT_ONLY = get_bool_env('LS_CSP_REPORT_ONLY', True)
     CSP_REPORT_URI = get_env('LS_CSP_REPORT_URI', None)
