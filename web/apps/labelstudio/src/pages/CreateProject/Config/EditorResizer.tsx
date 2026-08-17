@@ -1,5 +1,6 @@
 import type React from "react";
 import { useCallback, useState } from "react";
+import { useTranslation } from "react-i18next";
 import clsx from "clsx";
 import styles from "./EditorResizer.module.scss";
 
@@ -36,6 +37,7 @@ export const EditorResizer: React.FC<EditorResizerProps> = ({
   constraints,
   disabled = false,
 }) => {
+  const { t } = useTranslation();
   const [isResizing, setIsResizing] = useState(false);
 
   const handlePointerDown = useCallback(
@@ -89,7 +91,7 @@ export const EditorResizer: React.FC<EditorResizerProps> = ({
       })}
       onPointerDown={handlePointerDown}
       aria-disabled={disabled}
-      title={disabled ? undefined : "Drag to resize"}
+      title={disabled ? undefined : t("labeling.dragToResize")}
     />
   );
 };

@@ -24,7 +24,7 @@ const isDevelopment = mode !== "production";
 const devtool = process.env.NODE_ENV === "production" ? "source-map" : "cheap-module-source-map";
 const FRONTEND_HMR = process.env.FRONTEND_HMR === "true";
 const FRONTEND_HOSTNAME = FRONTEND_HMR ? process.env.FRONTEND_HOSTNAME || "http://localhost:8010" : "";
-const DJANGO_HOSTNAME = process.env.DJANGO_HOSTNAME || "http://localhost:8080";
+const DJANGO_HOSTNAME = process.env.DJANGO_HOSTNAME || "http://localhost:8082";
 const HMR_PORT = FRONTEND_HMR ? +new URL(FRONTEND_HOSTNAME).port : 8010;
 
 const LOCAL_ENV = {
@@ -145,6 +145,15 @@ module.exports = composePlugins(
       cacheUnaffected: true,
       syncWebAssembly: true,
       asyncWebAssembly: true,
+    };
+
+    config.devServer = {
+      ...config.devServer,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+        "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization",
+      },
     };
 
     config.module.rules.forEach((rule) => {
@@ -304,6 +313,10 @@ module.exports = composePlugins(
                 target: `${DJANGO_HOSTNAME}`,
                 changeOrigin: true,
                 secure: false,
+                bypass: (req) => {
+                  if (req.url?.startsWith("/react-app/")) return false;
+                  return null;
+                },
               },
             ],
           },

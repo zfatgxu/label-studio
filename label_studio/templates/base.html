@@ -7,7 +7,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
-  <meta name="author" content="Label Studio"/>
+  <meta name="author" content="GXU标注平台"/>
   <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=0.9, shrink-to-fit=no">
 
@@ -61,7 +61,7 @@
   </script>
 
   {% block page_labeling %}
-    <title>Label Studio</title>
+    <title>GXU标注平台</title>
     <link href="{{settings.HOSTNAME}}{% static 'images/favicon.ico' %}" rel="shortcut icon"/>
   {% endblock %}
 
@@ -195,7 +195,7 @@
     },
 
     {% block app_more_settings %}
-      page_title: "Label Studio",
+      page_title: "GXU标注平台",
       flags: {
         allow_organization_webhooks: {{settings.ALLOW_ORGANIZATION_WEBHOOKS|yesno:"true,false"}},
         storage_persistence: {{ settings.STORAGE_PERSISTENCE|yesno:"true,false" }},
@@ -206,13 +206,13 @@
 </script>
 
 {% block app-js %}
-<script src="{{settings.FRONTEND_HOSTNAME}}/react-app/runtime.js?v={{ versions.backend.commit }}"></script>
+<script src="{{settings.FRONTEND_HOSTNAME}}/react-app/runtime.js?v={{ versions.backend.commit }}" crossorigin="anonymous"></script>
 {% comment %}
   NOTE: purposely setting this to not cache using backend commit as we do not intend this to change frequently.
   If for any reason we need to invalidate the cache, we can do so by changing the version number.
 {% endcomment %}
-<script src="{{settings.FRONTEND_HOSTNAME}}/react-app/vendor.js?v=1"></script>
-<script src="{{settings.FRONTEND_HOSTNAME}}/react-app/main.js?v={{ versions.backend.commit }}"></script>
+<script src="{{settings.FRONTEND_HOSTNAME}}/react-app/vendor.js?v=1" crossorigin="anonymous"></script>
+<script src="{{settings.FRONTEND_HOSTNAME}}/react-app/main.js?v={{ versions.backend.commit }}" crossorigin="anonymous"></script>
 {% endblock %}
 
 {% block bottomjs %}

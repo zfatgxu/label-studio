@@ -98,6 +98,8 @@
 
 - `src/pages/DataManager/DataManager.tsx` 及子组件
   - 仅修复了 biome 未使用变量警告，未全面进行中文化。
+- `src/pages/CreateProject/Config/*`
+  - ✅ 标注配置（Labeling Setup）页面，包括 `Config`、`TemplatesList`、`EditorResizer`、工具提示与分类侧边栏。
 - `src/pages/Settings/*`
   - ✅ `MachineLearningSettings`（含 `MachineLearningList`、`Forms`、`TestRequest`、`StartModelTraining`）
   - ✅ `PredictionsSettings`（含 `PredictionsList`）

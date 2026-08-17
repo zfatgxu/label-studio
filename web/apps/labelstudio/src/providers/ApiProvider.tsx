@@ -49,7 +49,6 @@ const displayErrorModal = (errorDetails: FormattedError) => {
     allowClose: !isShutdown,
     body: isShutdown ? (
       <ErrorWrapper
-        possum={false}
         title={"Connection refused"}
         message={"Server not responding. Is it still running?"}
       />

@@ -27,6 +27,7 @@ services:
       FRONTEND_HMR: "true"
       FRONTEND_HOSTNAME: http://localhost:8010
       DJANGO_HOSTNAME: http://localhost:8082
+      CSRF_TRUSTED_ORIGINS: "http://localhost:8010,http://127.0.0.1:8010,http://localhost:8080,http://127.0.0.1:8080,http://localhost:8081,http://127.0.0.1:8081,http://localhost:8082,http://127.0.0.1:8082"
       # 本机开发由预置管理员创建账户；禁止匿名公开注册。
       DISABLE_SIGNUP_WITHOUT_LINK: "true"
     volumes:

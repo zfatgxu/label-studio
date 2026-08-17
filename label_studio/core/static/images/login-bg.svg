@@ -1,5 +1,21 @@
 <svg width="180" height="239" viewBox="0 0 180 239" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M-9.91821e-05 59.8662H119.84V179.706H-9.91821e-05V59.8662ZM59.9197 119.786H119.84V179.706H59.9197V119.786Z" fill="#FF7557"/>
-<rect width="60.0546" height="60.0546" transform="matrix(-1 0 0 1 179.765 0)" fill="#FFA663"/>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M179.762 239H59.9219V119.16H179.762V239ZM119.842 179.08H59.922V119.16H119.842V179.08Z" fill="#E37BD3"/>
+  <title>广西大学 AI 智算团队</title>
+  <defs>
+    <linearGradient id="lbg" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#1e88e5"/>
+      <stop offset="1" stop-color="#0d47a1"/>
+    </linearGradient>
+  </defs>
+  <g opacity="0.9">
+    <circle cx="90" cy="119.5" r="86" fill="none" stroke="#26c6da" stroke-width="3" stroke-dasharray="4 8"/>
+    <g fill="#26c6da">
+      <polygon points="90,26 98,42 82,42"/>
+      <polygon points="90,213 98,197 82,197"/>
+      <polygon points="4,119.5 20,111.5 20,127.5"/>
+      <polygon points="176,119.5 160,111.5 160,127.5"/>
+    </g>
+    <circle cx="90" cy="119.5" r="66" fill="#4dd0e1"/>
+    <circle cx="90" cy="119.5" r="57" fill="url(#lbg)"/>
+    <text x="90" y="133" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="36" fill="#ffffff">GXU</text>
+  </g>
 </svg>

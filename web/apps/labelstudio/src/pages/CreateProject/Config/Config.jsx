@@ -12,7 +12,7 @@ import { FF_UNSAVED_CHANGES, isFF } from "../../../utils/feature-flags";
 import { colorNames } from "./colors";
 import "./Config.scss";
 import { Preview } from "./Preview";
-import { ff, LARGE_CONFIG_MESSAGE, LARGE_CONFIG_TAG_THRESHOLD, countConfigTags } from "@humansignal/core";
+import { ff, LARGE_CONFIG_TAG_THRESHOLD, countConfigTags } from "@humansignal/core";
 import { DEFAULT_COLUMN, EMPTY_CONFIG, isEmptyConfig, Template } from "./Template";
 import { TemplatesList } from "./TemplatesList";
 
@@ -53,7 +53,7 @@ const AdaptivePreview = React.memo(({ config, hasPendingUpdate, onUpdatePreview,
       <div className={configClass.elem("preview-container").toClassName()}>
         <div className={configClass.elem("preview-info-banner").toClassName()}>
           <IconInfoOutline width={16} height={16} />
-          <span>{LARGE_CONFIG_MESSAGE}</span>
+          <span>{t("labeling.largeConfigMessage")}</span>
           <Button size="small" onClick={onUpdatePreview} waiting={isUpdating} disabled={isUpdating}>
             {isUpdating ? t("labeling.updating") : t("labeling.updatePreview")}
           </Button>

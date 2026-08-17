@@ -1,7 +1,7 @@
-import type { FC } from "react";
+import type { FC, ReactNode } from "react";
 
 export type PageProps = {
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
 export type PageComponent = FC<PageProps>;

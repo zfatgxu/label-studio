@@ -7,7 +7,6 @@ import { IconCheck, IconEllipsis, IconMinus, IconSparks } from "@humansignal/ico
 import { Userpic, Button, Dropdown, Tooltip } from "@humansignal/ui";
 import { Menu, Pagination } from "../../components";
 import { cn } from "../../utils/bem";
-import { absoluteURL } from "../../utils/helpers";
 import { ProjectStateChip } from "@humansignal/app-common";
 
 const DEFAULT_CARD_COLORS = ["#FFFFFF", "#FDFDFC"];
@@ -41,11 +40,6 @@ export const EmptyProjectsList = ({ openModal }) => {
   const { t } = useTranslation();
   return (
     <div className={cn("empty-projects-page").toClassName()}>
-      <img
-        alt=""
-        className={cn("empty-projects-page").elem("heidi").toClassName()}
-        src={absoluteURL("/static/images/opossum_looking.png")}
-      />
       <h1 className={cn("empty-projects-page").elem("header").toClassName()}>{t("projects.emptyTitle")}</h1>
       <p>{t("projects.emptyHint")}</p>
       <Button onClick={openModal} className="my-8" aria-label={t("projects.createNew")}>

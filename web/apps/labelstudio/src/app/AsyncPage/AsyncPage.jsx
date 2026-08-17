@@ -50,7 +50,6 @@ const loadAsyncPage = async (url) => {
     modal({
       body: () => (
         <ErrorWrapper
-          possum={false}
           title={"Connection refused"}
           message={"Server not responding. Is it still running?"}
         />

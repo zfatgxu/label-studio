@@ -4,7 +4,7 @@ import { IconCode, IconErrorAlt, IconFileUpload, IconInfoOutline, IconTrash, Ico
 import { cn as scn } from "@humansignal/shad/utils";
 import { useAtomValue } from "jotai";
 import Input from "libs/datamanager/src/components/Common/Input/Input";
-import { useCallback, useEffect, useReducer, useRef, useState } from "react";
+import React, { useCallback, useEffect, useReducer, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAPI } from "../../../providers/ApiProvider";
 import { cn } from "../../../utils/bem";

@@ -13,7 +13,6 @@ export const InlineError = ({ minimal, children, includeValidation, className, s
   return context.error ? (
     <div className={cn("inline-error").mix(className).toClassName()} style={style}>
       <ErrorWrapper
-        possum={false}
         minimal={minimal}
         {...context.errorFormatter(context.error, { includeValidation })}
       />

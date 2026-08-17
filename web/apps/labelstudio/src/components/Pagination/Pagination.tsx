@@ -1,8 +1,10 @@
 import {
   type CSSProperties,
   type FC,
+  type FocusEvent,
   forwardRef,
   type KeyboardEvent,
+  type MouseEvent,
   useCallback,
   useEffect,
   useMemo,
@@ -135,7 +137,7 @@ export const Pagination: FC<PaginationProps> = forwardRef(
     );
 
     const applyPageNumberFromEvent = (
-      e: React.KeyboardEvent<HTMLInputElement> | React.FocusEvent<HTMLInputElement>,
+      e: KeyboardEvent<HTMLInputElement> | FocusEvent<HTMLInputElement>,
     ) => {
       const result = Number.parseInt((e.target as HTMLInputElement).value);
 
@@ -281,7 +283,7 @@ export const Pagination: FC<PaginationProps> = forwardRef(
 );
 
 const NavigationButton: FC<{
-  onClick: (e: React.MouseEvent<HTMLDivElement>) => void;
+  onClick: (e: MouseEvent<HTMLDivElement>) => void;
   mod: string[];
   disabled?: boolean;
 }> = (props) => {

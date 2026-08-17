@@ -3,11 +3,22 @@
   <desc id="desc">GXU AI 数据管理平台标识</desc>
   <defs>
     <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop stop-color="#1565c0"/>
-      <stop offset="1" stop-color="#00897b"/>
+      <stop stop-color="#1e88e5"/>
+      <stop offset="1" stop-color="#0d47a1"/>
     </linearGradient>
   </defs>
-  <rect width="160" height="160" rx="32" fill="url(#g)"/>
-  <path d="M43 113V47h19l18 33 18-33h19v66h-16V75l-14 25h-14L59 75v38H43Z" fill="#fff"/>
-  <circle cx="122" cy="42" r="13" fill="#ffca28"/>
+  <circle cx="80" cy="80" r="76" fill="none" stroke="#26c6da" stroke-width="2.5" stroke-dasharray="3 7"/>
+  <g fill="#26c6da">
+    <polygon points="80,2 87,18 73,18"/>
+    <polygon points="80,158 87,142 73,142"/>
+    <polygon points="2,80 18,73 18,87"/>
+    <polygon points="158,80 142,73 142,87"/>
+  </g>
+  <circle cx="80" cy="80" r="58" fill="#4dd0e1"/>
+  <circle cx="80" cy="80" r="50" fill="url(#g)"/>
+  <text x="80" y="93" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="32" fill="#ffffff" letter-spacing="1">GXU</text>
+  <circle cx="24" cy="24" r="4" fill="#1976d2"/>
+  <circle cx="136" cy="24" r="4" fill="#1976d2"/>
+  <circle cx="24" cy="136" r="4" fill="#1976d2"/>
+  <circle cx="136" cy="136" r="4" fill="#1976d2"/>
 </svg>
