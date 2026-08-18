@@ -78,6 +78,13 @@ export const enUS = {
       untitled: "New project",
     },
   },
+  heidiTip: {
+    dontShow: "Don't show",
+  },
+  pagination: {
+    pageIndicator: "{{currentPage}} of {{totalPages}}",
+    perPage: "{{value}} per page",
+  },
   dataManager: {
     crashedTitle: "Project was deleted or not yet created",
     backToProjects: "Back to projects",

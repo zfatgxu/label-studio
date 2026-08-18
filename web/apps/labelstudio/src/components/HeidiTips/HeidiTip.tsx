@@ -1,6 +1,7 @@
 import { type FC, type MouseEvent, useCallback, useMemo } from "react";
 import { cn } from "../../utils/bem";
 import { IconCross } from "@humansignal/icons";
+import { useTranslation } from "react-i18next";
 import "./HeidiTip.scss";
 import { Button } from "@humansignal/ui";
 import type { HeidiTipProps, Tip } from "./types";
@@ -28,6 +29,7 @@ const HeidiLink: FC<{ link: Tip["link"]; onClick: () => void }> = ({ link, onCli
 };
 
 export const HeidiTip: FC<HeidiTipProps> = ({ tip, onDismiss, onLinkClick }) => {
+  const { t } = useTranslation();
   const handleClick = useCallback((event: MouseEvent) => {
     event.preventDefault();
     event.stopPropagation();
@@ -40,7 +42,7 @@ export const HeidiTip: FC<HeidiTipProps> = ({ tip, onDismiss, onLinkClick }) => 
         <div className={cn("heidy-tip").elem("header").toClassName()}>
           <div className={cn("heidy-tip").elem("title").toClassName()}>{tip.title}</div>
           {tip.closable && (
-            <Button tooltip="Don't show" look="string" size="small" onClick={handleClick} className="!p-0">
+            <Button tooltip={t("heidiTip.dontShow")} look="string" size="small" onClick={handleClick} className="!p-0">
               <IconCross />
             </Button>
           )}

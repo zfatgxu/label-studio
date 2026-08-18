@@ -78,6 +78,13 @@ export const zhCN = {
       untitled: "未命名项目",
     },
   },
+  heidiTip: {
+    dontShow: "不再显示",
+  },
+  pagination: {
+    pageIndicator: "{{currentPage}} / {{totalPages}}",
+    perPage: "{{value}} 条/页",
+  },
   dataManager: {
     crashedTitle: "项目已删除或尚未创建",
     backToProjects: "返回项目列表",

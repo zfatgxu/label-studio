@@ -186,7 +186,7 @@ export const HomePage: Page = () => {
   );
 };
 
-HomePage.title = "Home";
+HomePage.title = "首页";
 HomePage.path = "/";
 HomePage.exact = true;
 

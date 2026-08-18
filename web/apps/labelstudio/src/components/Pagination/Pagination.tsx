@@ -16,6 +16,7 @@ import { useValueTracker } from "../Form/Utils";
 import { Select } from "@humansignal/ui";
 import "./Pagination.scss";
 import { useUpdateEffect } from "../../utils/hooks";
+import { useTranslation } from "react-i18next";
 
 interface PaginationProps {
   name?: string;
@@ -66,6 +67,7 @@ export const Pagination: FC<PaginationProps> = forwardRef(
     { allowInput = true, allowRewind = true, disabled = false, size = "medium", pageSizeOptions = [], ...props },
     ref,
   ) => {
+    const { t } = useTranslation();
     const [inputMode, setInputMode] = useState(false);
     const [currentPage, setCurrentPage] = useValueTracker(props.page);
     const [waiting, setWaiting] = useValueTracker(props.waiting);
@@ -234,7 +236,7 @@ export const Pagination: FC<PaginationProps> = forwardRef(
                   if (allowInput) setInputMode(true);
                 }}
               >
-                {currentPage} <span>of {totalPages}</span>
+                {t("pagination.pageIndicator", { currentPage, totalPages })}
                 <div
                   onClick={() => {
                     /*  */
@@ -264,7 +266,7 @@ export const Pagination: FC<PaginationProps> = forwardRef(
           <div className={cn("pagination-ls").elem("page-size").toClassName()}>
             <Select
               value={pageSize}
-              options={pageSizeOptions.map((v) => ({ label: `${v} per page`, value: v }))}
+              options={pageSizeOptions.map((v) => ({ label: t("pagination.perPage", { value: v }), value: v }))}
               onChange={(val: string) => {
                 const newPageSize = Number.parseInt(val);
 
