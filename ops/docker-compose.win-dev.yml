@@ -2,6 +2,9 @@ name: gxu-label-studio-win-dev
 
 services:
   label-studio-dev:
+    # 开发阶段使用官方基础镜像跑 Django 后端；前端改由本机 `yarn dev`
+    # （web/ 目录）以 HMR 方式提供，翻译/组件改动无需重建镜像。
+    # 发布前如需产出独立镜像，再切换到本仓库自建镜像（docker compose build app）。
     image: heartexlabs/label-studio:1.23.0
     container_name: label-studio-win-dev
     restart: unless-stopped
@@ -24,6 +27,8 @@ services:
       NO_PROXY: "*"
       no_proxy: "*"
       LABEL_STUDIO_BASE_DATA_DIR: /label-studio/data
+      # 需要在 web/ 目录执行 `yarn dev` 启动前端 HMR 开发服务器（监听 8010），
+      # 否则页面会因加载不到 localhost:8010 的 JS/CSS 而空白。
       FRONTEND_HMR: "true"
       FRONTEND_HOSTNAME: http://localhost:8010
       DJANGO_HOSTNAME: http://localhost:8082
